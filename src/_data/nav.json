@@ -1,0 +1,7 @@
+[
+  { "href": "index.html", "label": "Domů" },
+  { "href": "o-mne.html", "label": "O mně" },
+  { "href": "sluzby.html", "label": "Služby" },
+  { "href": "sothys.html", "label": "Sothys" },
+  { "href": "kontakt.html", "label": "Kontakt" }
+]

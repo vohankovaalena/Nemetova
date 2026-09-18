@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Spustit web (Eleventy dev server)",
+      "type": "shell",
+      "command": "npm start",
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^never matches$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\[11ty\\] Writing",
+          "endsPattern": "^\\[11ty\\] (Server at|Watching)"
+        }
+      }
+    }
+  ]
+}

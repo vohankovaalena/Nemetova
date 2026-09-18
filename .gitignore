@@ -1,0 +1,8 @@
+node_modules/
+_site/
+.DS_Store
+
+# Zdrojové materiály od klientky — 3GB originálních fotek a podklad ve
+# formátu Pages, nepatří do repozitáře webu (weby používá jen src/assets/img).
+nemetova_img/
+nemetova web struktura.pages

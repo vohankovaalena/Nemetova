@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Spustit web v prohlížeči",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "Spustit web (Eleventy dev server)"
+    }
+  ]
+}

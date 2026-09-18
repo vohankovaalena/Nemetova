@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<meta name="description" content="{{ description }}">
+<link rel="canonical" href="{{ site.url }}/{{ (page.filePathStem + '.html') }}">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ ogTitle or title }}">
+<meta property="og:description" content="{{ ogDescription or description }}">
+<meta property="og:image" content="{{ site.url }}/assets/img/hero-home.webp">
+<meta property="og:locale" content="cs_CZ">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "{{ site.name }}",
+  "image": "{{ site.url }}/assets/img/hero-home.webp",
+  "telephone": "{{ site.phone }}",
+  "email": "{{ site.email }}",
+  "url": "{{ site.url }}",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ site.addressStreet }}",
+    "postalCode": "{{ site.addressZip }}",
+    "addressLocality": "{{ site.addressCity }}",
+    "addressCountry": "CZ"
+  },
+  "sameAs": ["{{ site.instagram }}", "{{ site.facebook }}"]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#obsah">Přeskočit na obsah</a>
+
+<header class="site-header{% if heroImage %} site-header--on-image{% endif %}" id="siteHeader">
+  <div class="wrap">
+    <a class="logo" href="index.html">{{ site.brand }}<span>.</span></a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Otevřít menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-list" id="navList">
+      {%- for item in nav %}
+      <li><a class="nav__link" href="{{ item.href }}"
+             {% if page.filePathStem + ".html" == "/" + item.href %} aria-current="page"{% endif %}
+        >{{ item.label }}</a></li>
+      {%- endfor %}
+      <li class="nav-cta"><a class="btn btn--gold" href="kontakt.html">Objednat se</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="obsah">
+{{ content | safe -}}
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div>
+      <a class="logo" href="index.html">{{ site.brand }}<span>.</span></a>
+      <p class="footer-tagline">{{ site.tagline }} — péče o pleť, ruce a nohy v Příbrami. Individuální přístup a produkty francouzské značky Sothys Paris.</p>
+      <div class="social-row">
+        <a href="{{ site.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1"/></svg>
+        </a>
+        <a href="{{ site.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4v-2a1 1 0 0 1 1-1z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <h4>Navigace</h4>
+      <ul class="footer-links">
+        {%- for item in nav %}
+        <li><a href="{{ item.href }}">{{ item.label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <ul class="footer-links">
+        <li><a href="tel:{{ site.phoneHref }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li>{{ site.address }}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>&copy; 2026 {{ site.name }}, IČO {{ site.ico }}</span>
+    <a href="gdpr.html">Ochrana osobních údajů</a>
+  </div>
+</footer>
+
+<div class="chat-widget" id="chatWidget">
+  <div class="chat-panel" id="chatPanel" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Kontaktní formulář">
+    <div class="chat-panel-header">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>
+      <span>Napište mi</span>
+      <button class="chat-panel-close" id="chatPanelClose" aria-label="Zavřít">&#x2715;</button>
+    </div>
+    <div class="chat-panel-body">
+      <form class="chat-form" id="chatForm">
+        <input type="hidden" name="subject" value="Nová zpráva z chatu — nemetova.cz">
+        <input type="hidden" name="from_name" value="Németová — chat">
+        <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="form-group">
+          <label for="chat-name" class="sr-only">Jméno a příjmení</label>
+          <input type="text" id="chat-name" name="name" placeholder="Jméno a příjmení" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label for="chat-email" class="sr-only">E-mail</label>
+          <input type="email" id="chat-email" name="email" placeholder="E-mail" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="chat-phone" class="sr-only">Telefon (nepovinné)</label>
+          <input type="tel" id="chat-phone" name="phone" placeholder="Telefon (nepovinné)" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label for="chat-message" class="sr-only">Zpráva</label>
+          <textarea id="chat-message" name="message" placeholder="Napište mi, o jakou péči máte zájem…" rows="4" required></textarea>
+        </div>
+        <div class="form-gdpr-checkbox">
+          <input type="checkbox" id="chat-gdpr" name="gdpr" required>
+          <label for="chat-gdpr">Souhlasím se zpracováním osobních údajů dle <a href="gdpr.html" target="_blank" rel="noopener">Zásad ochrany osobních údajů</a>.</label>
+        </div>
+        <button type="submit" class="chat-form-submit">Odeslat zprávu</button>
+      </form>
+    </div>
+  </div>
+  <button class="chat-fab" id="chatFab" aria-label="Otevřít kontaktní formulář" aria-expanded="false">
+    <svg class="chat-fab-icon chat-fab-icon--open" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    <svg class="chat-fab-icon chat-fab-icon--close" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</div>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
