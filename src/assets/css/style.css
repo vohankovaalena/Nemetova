@@ -708,6 +708,13 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
     width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%;
     -webkit-mask-image: none; mask-image: none;
   }
+  /* Same bottom fade as the home page photo. */
+  .page-hero--image .page-hero__media::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(250, 249, 248, 0) 58%,
+      rgba(250, 249, 248, 0.9) 100%);
+  }
   .page-hero--image .page-hero__inner {
     max-width: none;
     padding-block: 2.4rem 0;
