@@ -137,6 +137,11 @@ p { margin: 0 0 var(--space-sm); }
 .btn--light { border-color: rgba(255,255,255,0.6); color: var(--color-cream); }
 .btn--light:hover { background: var(--color-cream); color: var(--color-dark); border-color: var(--color-cream); }
 
+.hero-actions .btn--solid { background: var(--color-gold-text); border-color: var(--color-gold-text); color: var(--color-cream); }
+.hero-actions .btn--solid:hover { background: transparent; color: var(--color-gold-text); }
+.hero-actions .btn:not(.btn--solid) { border-color: var(--color-gold-text); color: var(--color-gold-text); background: transparent; }
+.hero-actions .btn:not(.btn--solid):hover { background: var(--color-gold-text); border-color: var(--color-gold-text); color: var(--color-cream); }
+
 .link-arrow {
   display: inline-flex; align-items: center; gap: 0.5rem;
   font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
@@ -311,6 +316,39 @@ p { margin: 0 0 var(--space-sm); }
   .hero--image .hero__lead,
   .hero--image .hero-actions,
   .hero--image .hero-note {
+    animation: none;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+/* Same letter build-up as the home page hero name, reused on every inner
+   page's <h1> (see letterAnim() in eleventy.config.mjs). */
+.letter-word { display: inline-block; white-space: nowrap; }
+.letter-word > span {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateY(0.14em) scale(1.06);
+  animation: heroLetterIn 1.15s var(--ease) forwards;
+  animation-delay: var(--d, 0s);
+}
+.page-hero__inner .eyebrow {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroFadeUp 0.7s var(--ease) forwards;
+}
+.page-hero__inner .lead {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: heroFadeUp 0.9s var(--ease) forwards;
+  animation-delay: 2.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .letter-word > span,
+  .page-hero__inner .eyebrow,
+  .page-hero__inner .lead {
     animation: none;
     opacity: 1;
     filter: none;
