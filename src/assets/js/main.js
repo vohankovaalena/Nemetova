@@ -82,6 +82,12 @@ function trapTab(container, e) {
       link.addEventListener('click', () => setMenu(false, false));
     });
 
+    document.addEventListener('click', (e) => {
+      if (navList.classList.contains('is-open') && !navList.contains(e.target) && !toggle.contains(e.target)) {
+        setMenu(false, false);
+      }
+    });
+
     document.addEventListener('keydown', (e) => {
       if (!navList.classList.contains('is-open')) return;
       if (e.key === 'Escape') setMenu(false, true);

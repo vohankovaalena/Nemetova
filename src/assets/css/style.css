@@ -155,19 +155,27 @@ p { margin: 0 0 var(--space-sm); }
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   padding: 1.5rem 0;
-  transition: background 0.4s var(--ease), padding 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition: padding 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+/* Background + blur live on a pseudo-element: backdrop-filter on the header
+   itself would make it the containing block of the fixed mobile menu. */
+.site-header::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  transition: background 0.4s var(--ease);
 }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; }
 .site-header.is-scrolled {
-  background: rgba(250, 249, 248, 0.94);
-  backdrop-filter: blur(8px);
   padding: 0.9rem 0;
   box-shadow: 0 8px 30px rgba(77, 60, 48, 0.08);
+}
+.site-header.is-scrolled::before {
+  background: rgba(250, 249, 248, 0.94);
+  backdrop-filter: blur(8px);
 }
 
 /* Pages whose hero is a full-bleed photo get a semi-transparent white band
    behind the header before scroll, so the dark menu stays readable. */
-.site-header--on-image:not(.is-scrolled) {
+.site-header--on-image:not(.is-scrolled)::before {
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(4px);
 }
@@ -679,10 +687,11 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
     box-shadow: -20px 0 50px rgba(77, 60, 48, 0.15);
   }
   .nav-list.is-open { transform: translateX(0); }
-  .nav-toggle { display: flex; }
+  .nav-toggle { display: flex; position: relative; z-index: 2; }
   .nav-cta { margin-left: 0; }
   .form-row { grid-template-columns: 1fr; }
   .footer .wrap { grid-template-columns: 1fr; gap: 2.4rem; }
+  .footer .logo { display: flex; justify-content: center; }
   .chat-panel { width: calc(100vw - 2.4rem); }
   .page-hero { padding-top: 8.5rem; }
   .page-hero--image {
