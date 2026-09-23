@@ -320,6 +320,7 @@ p { margin: 0 0 var(--space-sm); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   html.reveal-ready [data-reveal] { transform: none; transition: none; }
+  html.reveal-ready .media-frame[data-reveal] img { opacity: 1; filter: none; transition: none; }
   .hero-name__line > span,
   .hero--image .hero__lead,
   .hero--image .hero-actions,
@@ -422,9 +423,15 @@ p { margin: 0 0 var(--space-sm); }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; }
 .grid-2 > *, .grid-3 > *, .grid-4 > *, .hero .wrap > *, .pillars > *, .footer .wrap > * { min-width: 0; }
 
-.media-frame { position: relative; overflow: hidden; }
-.media-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
-.media-frame:hover img { transform: scale(1.04); }
+/* Standalone photo: light beige mat, then a fine gold outer line — same
+   look as the service cards. */
+.media-frame {
+  position: relative;
+  padding: clamp(0.7rem, 2.2vw, 1.1rem);
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-gold);
+}
+.media-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* ---------- Service / feature cards ---------- */
 .card {
@@ -594,6 +601,15 @@ main:focus { outline: none; }
 }
 .footer-bottom a { color: rgba(255, 253, 250, 0.66); }
 .footer-bottom a:hover { color: var(--color-gold-light); }
+
+/* Framed photos develop like a print: they start soft and faint inside the
+   mat and settle to sharp as the frame scrolls in. No movement, so the
+   frame itself never shifts. */
+html.reveal-ready .media-frame[data-reveal] img {
+  opacity: 0; filter: blur(10px) saturate(0.85);
+  transition: opacity 1.4s var(--ease) 0.15s, filter 1.6s var(--ease) 0.15s;
+}
+html.reveal-ready .media-frame[data-reveal].is-visible img { opacity: 1; filter: none; }
 
 /* ---------- Scroll reveal ----------
    Content is never opacity-hidden — only nudged down slightly and eased back
