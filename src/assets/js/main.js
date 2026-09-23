@@ -14,6 +14,37 @@ const CONFIG = {
 };
 
 /* ===========================
+   FOCUS HELPERS
+   ===========================
+   Overlay (mobilní menu, chat) musí držet fokus uvnitř, dokud je otevřený —
+   jinak Tab vypadne do stránky pod ním, kterou uživatel nevidí.
+*/
+const FOCUSABLE = [
+  'a[href]', 'button', 'input', 'select', 'textarea', '[tabindex]',
+].map((sel) => `${sel}:not([disabled]):not([tabindex="-1"]):not([aria-hidden="true"])`).join(', ');
+
+function focusablesIn(container) {
+  // .hp-field (honeypot) a skrytá pole musí ven — jinak by na ně skočil fokus.
+  return Array.from(container.querySelectorAll(FOCUSABLE))
+    .filter((el) => el.type !== 'hidden' && (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement));
+}
+
+function trapTab(container, e) {
+  if (e.key !== 'Tab') return;
+  const items = focusablesIn(container);
+  if (!items.length) return;
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+/* ===========================
    HEADER — scroll shadow + mobile menu
    =========================== */
 (function () {
@@ -30,18 +61,31 @@ const CONFIG = {
   }
 
   if (toggle && navList) {
-    toggle.addEventListener('click', () => {
-      const isOpen = navList.classList.toggle('is-open');
+    const setMenu = (isOpen, returnFocus) => {
+      navList.classList.toggle('is-open', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.setAttribute('aria-label', isOpen ? 'Zavřít menu' : 'Otevřít menu');
       document.body.style.overflow = isOpen ? 'hidden' : '';
+      if (isOpen) {
+        const first = focusablesIn(navList)[0];
+        if (first) first.focus();
+      } else if (returnFocus) {
+        toggle.focus();
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      setMenu(!navList.classList.contains('is-open'), true);
     });
 
     navList.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        navList.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', () => setMenu(false, false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!navList.classList.contains('is-open')) return;
+      if (e.key === 'Escape') setMenu(false, true);
+      else trapTab(navList, e);
     });
   }
 }());
@@ -93,38 +137,37 @@ async function sendViaWeb3Forms(form) {
   return response.ok;
 }
 
-function wireForm(form, successMarkup) {
-  if (!form) return;
+function wireForm(form, status) {
+  if (!form || !status) return;
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
 
+    status.textContent = '';
+    status.classList.remove('form-status--error');
     submitBtn.textContent = 'Odesílám…';
     submitBtn.disabled = true;
 
     try {
-      if (await sendViaWeb3Forms(form)) {
-        form.innerHTML = successMarkup;
-      } else {
-        throw new Error('Web3Forms error');
-      }
+      if (!(await sendViaWeb3Forms(form))) throw new Error('Web3Forms error');
+      // Formulář se schová, ale hlášení zůstane v DOM a dostane fokus —
+      // jinak fokus spadne na <body> a odečítač neoznámí, co se stalo.
+      form.hidden = true;
+      status.textContent = 'Děkuji za zprávu! Ozvu se vám co nejdříve.';
+      status.focus();
     } catch (err) {
-      alert('Zprávu se nepodařilo odeslat. Zkuste to prosím znovu nebo napište na info@nemetova.cz.');
+      status.classList.add('form-status--error');
+      status.textContent = 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu nebo napište na info@nemetova.cz.';
       submitBtn.textContent = originalText;
       submitBtn.disabled = false;
+      status.focus();
     }
   });
 }
 
-wireForm(
-  document.getElementById('contactForm'),
-  '<div class="form-success">Děkuji za zprávu! Ozvu se vám co nejdříve.</div>'
-);
-wireForm(
-  document.getElementById('chatForm'),
-  '<div class="form-success">Děkuji za zprávu! Ozvu se vám co nejdříve.</div>'
-);
+wireForm(document.getElementById('contactForm'), document.getElementById('contactFormStatus'));
+wireForm(document.getElementById('chatForm'), document.getElementById('chatFormStatus'));
 
 /* ===========================
    FLOATING CHAT WIDGET
@@ -139,25 +182,31 @@ wireForm(
 
   function openChat() {
     widget.classList.add('is-open');
-    panel.setAttribute('aria-hidden', 'false');
     fab.setAttribute('aria-expanded', 'true');
-    const first = panel.querySelector('input, textarea, button');
-    if (first) first.focus();
+    // Panel je do teď visibility:hidden, fokus musí počkat na dokreslení.
+    // Cílem je první pole formuláře, ne zavírací křížek.
+    requestAnimationFrame(() => {
+      const items = focusablesIn(panel);
+      const target = items.find((el) => /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) || items[0];
+      if (target) target.focus();
+    });
   }
 
-  function closeChat() {
+  function closeChat(returnFocus = true) {
     widget.classList.remove('is-open');
-    panel.setAttribute('aria-hidden', 'true');
     fab.setAttribute('aria-expanded', 'false');
+    if (returnFocus) fab.focus();
   }
 
   fab.addEventListener('click', () => {
     widget.classList.contains('is-open') ? closeChat() : openChat();
   });
 
-  if (closeBtn) closeBtn.addEventListener('click', closeChat);
+  if (closeBtn) closeBtn.addEventListener('click', () => closeChat());
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && widget.classList.contains('is-open')) closeChat();
+    if (!widget.classList.contains('is-open')) return;
+    if (e.key === 'Escape') closeChat();
+    else trapTab(panel, e);
   });
 }());

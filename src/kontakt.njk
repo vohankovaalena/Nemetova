@@ -1,7 +1,6 @@
 ---
 title: "Kontakt | Németová — Kosmetika Sothys Paris"
 description: "Objednejte se na kosmetické ošetření, manikúru nebo pedikúru. Salon Petry Németové v budově Kostky Pb v Příbrami."
-heroImage: true
 ---
 <section class="page-hero page-hero--image">
   <div class="page-hero__media">
@@ -54,10 +53,11 @@ heroImage: true
         </div>
         <div class="form-gdpr-checkbox">
           <input type="checkbox" id="gdpr" name="gdpr" required>
-          <label for="gdpr">Souhlasím se zpracováním osobních údajů dle <a href="gdpr.html" target="_blank" rel="noopener">Zásad ochrany osobních údajů</a>.</label>
+          <label for="gdpr">Souhlasím se zpracováním osobních údajů dle <a href="gdpr.html" target="_blank" rel="noopener">Zásad ochrany osobních údajů<span class="sr-only"> (otevře se v novém okně)</span></a>.</label>
         </div>
         <button type="submit" class="btn btn--solid">Odeslat zprávu</button>
       </form>
+      <div class="form-status" id="contactFormStatus" role="status" tabindex="-1"></div>
     </div>
 
     <div data-reveal>
@@ -70,10 +70,10 @@ heroImage: true
         <li><span class="label">IČO</span>{{ site.ico }}</li>
       </ul>
       <div class="social-row">
-        <a href="{{ site.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="{{ site.instagram }}" target="_blank" rel="noopener" aria-label="Instagram (otevře se v novém okně)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1"/></svg>
         </a>
-        <a href="{{ site.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+        <a href="{{ site.facebook }}" target="_blank" rel="noopener" aria-label="Facebook (otevře se v novém okně)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4v-2a1 1 0 0 1 1-1z"/></svg>
         </a>
       </div>
