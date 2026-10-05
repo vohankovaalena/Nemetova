@@ -216,3 +216,187 @@ wireForm(document.getElementById('chatForm'), document.getElementById('chatFormS
     else trapTab(panel, e);
   });
 }());
+
+/* ===========================
+   CERTIFICATE CAROUSEL (O mně)
+   ===========================
+   Nekonečný posun: track je zdvojený (kopie je aria-hidden), takže smyčka
+   navazuje bez skoku. Posun řídí requestAnimationFrame. Zastaví se při najetí
+   myší, fokusu, tažení nebo při otevřeném lightboxu; lze ho pozastavit
+   tlačítkem a při "omezit pohyb" nejede sám. Šipky posunou o jednu kartu.
+   Klik na certifikát otevře lightbox.
+*/
+(function () {
+  const root = document.querySelector('[data-carousel]');
+  if (!root) return;
+
+  const track = root.querySelector('[data-track]');
+  const group = track.querySelector('[data-group]');
+  const prev = root.querySelector('[data-prev]');
+  const next = root.querySelector('[data-next]');
+  const toggle = root.querySelector('[data-toggle]');
+  const SPEED = 28;        // px za sekundu
+  const NUDGE_MS = 450;    // délka posunu šipkou
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const copy = group.cloneNode(true);
+  copy.setAttribute('aria-hidden', 'true');
+  copy.querySelectorAll('img').forEach((img) => { img.alt = ''; });
+  copy.querySelectorAll('button').forEach((btn) => { btn.tabIndex = -1; });
+  track.appendChild(copy);
+
+  let loopDistance = 0;
+  let offset = 0;          // neomezený; zobrazuje se modulo délka smyčky
+  let tween = null;
+  let last = 0;
+  let userPaused = reduceMotion.matches;
+  let holding = false;     // kurzor nebo fokus uvnitř
+  let dragging = false;
+  let lightboxOpen = false;
+
+  const cardStep = () => {
+    const card = group.querySelector('.cert-carousel__card');
+    return card.getBoundingClientRect().width + parseFloat(getComputedStyle(group).columnGap);
+  };
+
+  function draw() {
+    const x = loopDistance ? ((offset % loopDistance) + loopDistance) % loopDistance : 0;
+    track.style.transform = `translate3d(${-x}px, 0, 0)`;
+  }
+
+  function recalc() {
+    loopDistance = group.getBoundingClientRect().width;
+    draw();
+  }
+
+  function nudge(direction) {
+    const step = cardStep();
+    if (!step) return;
+    const base = tween ? tween.to : offset;
+    tween = { from: offset, to: (Math.round(base / step) + direction) * step, start: null };
+  }
+
+  function frame(ts) {
+    const dt = last ? (ts - last) / 1000 : 0;
+    last = ts;
+    if (tween) {
+      if (tween.start === null) tween.start = ts;
+      const t = Math.min(1, (ts - tween.start) / NUDGE_MS);
+      offset = tween.from + (tween.to - tween.from) * (1 - Math.pow(1 - t, 3));
+      if (t >= 1) tween = null;
+      draw();
+    } else if (!userPaused && !holding && !dragging && !lightboxOpen && !reduceMotion.matches) {
+      offset += SPEED * dt;
+      draw();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function renderToggle() {
+    toggle.setAttribute('aria-label', userPaused ? 'Spustit posun' : 'Pozastavit posun');
+    toggle.firstElementChild.textContent = userPaused ? '▶' : '❚❚';
+  }
+
+  prev.addEventListener('click', () => nudge(-1));
+  next.addEventListener('click', () => nudge(1));
+  toggle.addEventListener('click', () => {
+    userPaused = !userPaused;
+    renderToggle();
+  });
+
+  root.addEventListener('pointerenter', () => { holding = true; });
+  root.addEventListener('pointerleave', () => { holding = false; });
+  root.addEventListener('focusin', () => { holding = true; });
+  root.addEventListener('focusout', (e) => {
+    if (!root.contains(e.relatedTarget)) holding = false;
+  });
+
+  // Tažení prstem na mobilu; vertikální gesto nechá stránce.
+  let startX = 0;
+  let startY = 0;
+  let startOffset = 0;
+  let horizontal = false;
+  track.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startOffset = offset;
+    horizontal = false;
+    dragging = true;
+    tween = null;
+  }, { passive: true });
+  track.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (!horizontal) {
+      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+      if (Math.abs(dx) <= Math.abs(dy)) { dragging = false; return; }
+      horizontal = true;
+    }
+    offset = startOffset - dx;
+    draw();
+  }, { passive: true });
+  const endDrag = () => { dragging = false; };
+  track.addEventListener('touchend', endDrag);
+  track.addEventListener('touchcancel', endDrag);
+
+  window.addEventListener('resize', recalc);
+  window.addEventListener('load', recalc);
+
+  /* ---------- Lightbox ---------- */
+  const lightbox = document.querySelector('[data-lightbox]');
+  const lbImg = lightbox.querySelector('[data-lightbox-img]');
+  const lbClose = lightbox.querySelector('[data-lightbox-close]');
+  const lbPrev = lightbox.querySelector('[data-lightbox-prev]');
+  const lbNext = lightbox.querySelector('[data-lightbox-next]');
+  const originals = Array.from(group.querySelectorAll('.cert-carousel__card img'));
+  let current = 0;
+  let returnFocus = null;
+
+  function showLightbox(i) {
+    current = (i + originals.length) % originals.length;
+    lbImg.src = originals[current].getAttribute('src');
+    lbImg.alt = originals[current].alt;
+  }
+
+  function openLightbox(i) {
+    returnFocus = document.activeElement;
+    showLightbox(i);
+    lightbox.hidden = false;
+    lightboxOpen = true;
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.hidden = true;
+    lightboxOpen = false;
+    document.body.style.overflow = '';
+    if (returnFocus) returnFocus.focus();
+  }
+
+  track.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open]');
+    if (!btn || btn.closest('[aria-hidden="true"]')) return;
+    openLightbox(Number(btn.closest('[data-index]').dataset.index));
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', () => showLightbox(current - 1));
+  lbNext.addEventListener('click', () => showLightbox(current + 1));
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (!lightboxOpen) return;
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') showLightbox(current - 1);
+    else if (e.key === 'ArrowRight') showLightbox(current + 1);
+    else trapTab(lightbox, e);
+  });
+
+  recalc();
+  renderToggle();
+  requestAnimationFrame(frame);
+}());

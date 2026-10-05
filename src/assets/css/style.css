@@ -795,3 +795,92 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
   .price-item .price-row .name,
   .price-table--split tbody th { font-size: 0.98rem; }
 }
+
+/* ---------- Certifikáty (O mně) ---------- */
+.cert-carousel { margin-top: var(--space-md); }
+.cert-carousel__viewport {
+  overflow: hidden;
+  padding: 0.6rem 0;
+}
+.cert-carousel__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  touch-action: pan-y;
+}
+.cert-carousel__group {
+  display: flex;
+  gap: 1.2rem;
+  padding: 0 1.2rem 0 0;
+}
+.cert-carousel__card {
+  flex: 0 0 auto;
+  width: clamp(260px, 40vw, 380px);
+  margin: 0;
+  padding: clamp(0.5rem, 1.6vw, 0.8rem);
+  background: var(--color-cream);
+  border: 1px solid var(--color-gold);
+}
+.cert-carousel__open {
+  display: block; width: 100%; padding: 0; margin: 0;
+  border: 0; background: none; cursor: zoom-in;
+}
+.cert-carousel__open:focus-visible { outline: 2px solid var(--color-gold-text); outline-offset: 3px; }
+.cert-carousel__open img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; }
+.cert-carousel__controls {
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  margin-top: 1.2rem;
+}
+.cert-carousel__btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.6rem; height: 2.6rem;
+  border: 1px solid var(--color-line-strong);
+  background: transparent;
+  color: var(--color-gold-text);
+  font: inherit; font-size: 1rem; line-height: 1;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.cert-carousel__btn:hover { background: var(--color-gold-text); border-color: var(--color-gold-text); color: var(--color-cream); }
+.cert-carousel__btn:focus-visible { outline: 2px solid var(--color-gold-text); outline-offset: 3px; }
+.cert-carousel__btn--play { font-size: 0.6rem; }
+
+/* Lightbox pro certifikáty */
+.cert-lightbox[hidden] { display: none !important; }
+.cert-lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+  background: rgba(40, 30, 22, 0.86);
+}
+.cert-lightbox__figure { margin: 0; width: min(960px, 100%); }
+.cert-lightbox__img {
+  display: block; width: 100%; height: auto; max-height: 88vh;
+  object-fit: contain;
+  padding: clamp(0.5rem, 1.6vw, 1rem);
+  background: var(--color-cream);
+  border: 1px solid var(--color-gold);
+}
+.cert-lightbox__close,
+.cert-lightbox__nav {
+  position: absolute;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.8rem; height: 2.8rem;
+  border: 1px solid var(--color-gold);
+  background: rgba(255, 253, 250, 0.95);
+  color: var(--color-dark);
+  font: inherit; font-size: 1.3rem; line-height: 1;
+  cursor: pointer;
+}
+.cert-lightbox__close:hover,
+.cert-lightbox__nav:hover { background: var(--color-gold-text); border-color: var(--color-gold-text); color: var(--color-cream); }
+.cert-lightbox__close:focus-visible,
+.cert-lightbox__nav:focus-visible { outline: 2px solid var(--color-cream); outline-offset: 3px; }
+.cert-lightbox__close { top: 1rem; right: 1rem; }
+.cert-lightbox__nav { top: 50%; transform: translateY(-50%); }
+.cert-lightbox__nav--prev { left: 1rem; }
+.cert-lightbox__nav--next { right: 1rem; }
+@media (max-width: 720px) {
+  .cert-lightbox__nav--prev { left: 0.4rem; }
+  .cert-lightbox__nav--next { right: 0.4rem; }
+}

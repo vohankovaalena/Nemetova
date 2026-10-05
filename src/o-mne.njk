@@ -49,7 +49,61 @@ description: "Poznejte Petru Németovou — kosmetičku v Příbrami, která pra
       <h2>Odbornost, na kterou se můžete spolehnout</h2>
     </div>
     <p data-reveal>Jsem nesmírně vděčná, že se mohu věnovat práci, která mě baví a naplňuje. Záleží mi na tom, abych Vám poskytovala péči na nejvyšší možné úrovni, a proto se pravidelně vzdělávám a zdokonaluji ve svém oboru.</p>
-    <p data-reveal style="color: var(--color-dark-soft); font-size: 0.95rem;">[Doplnit: konkrétní certifikace, absolvovaná školení Sothys Paris a délka praxe — do uveřejnění webu.]</p>
+  </div>
+
+  <div class="cert-carousel" data-carousel data-reveal role="region" aria-label="Certifikáty a osvědčení">
+    <div class="cert-carousel__viewport">
+      <div class="cert-carousel__track" data-track>
+        <ul class="cert-carousel__group" data-group>
+            <li class="cert-carousel__card" data-index="0">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Certifikát Sothys Academy — profesionální kryo ošetření očního okolí">
+                <img src="assets/img/certifikaty/1.webp" width="1920" height="1080" alt="Certifikát Sothys Academy — profesionální kryo ošetření očního okolí" loading="lazy">
+              </button>
+            </li>
+            <li class="cert-carousel__card" data-index="1">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Certifikát Sothys — profesionální ošetření Double Peel">
+                <img src="assets/img/certifikaty/2.webp" width="1920" height="1080" alt="Certifikát Sothys — profesionální ošetření Double Peel" loading="lazy">
+              </button>
+            </li>
+            <li class="cert-carousel__card" data-index="2">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Certifikát Sothys — kosmetické ošetření pro citlivou pleť se SPA termální vodou">
+                <img src="assets/img/certifikaty/3.webp" width="1920" height="1080" alt="Certifikát Sothys — kosmetické ošetření pro citlivou pleť se SPA termální vodou" loading="lazy">
+              </button>
+            </li>
+            <li class="cert-carousel__card" data-index="3">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Certifikát Sothys Paris — obličejová péče">
+                <img src="assets/img/certifikaty/4.webp" width="1920" height="1080" alt="Certifikát Sothys Paris — obličejová péče" loading="lazy">
+              </button>
+            </li>
+            <li class="cert-carousel__card" data-index="4">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Certifikát Sothys — intenzivní hydratační kúra Hydra Hyaluronic Acid">
+                <img src="assets/img/certifikaty/5.webp" width="1920" height="1080" alt="Certifikát Sothys — intenzivní hydratační kúra Hydra Hyaluronic Acid" loading="lazy">
+              </button>
+            </li>
+            <li class="cert-carousel__card" data-index="5">
+              <button type="button" class="cert-carousel__open" data-open aria-label="Zvětšit certifikát: Osvědčení o získání profesní kvalifikace">
+                <img src="assets/img/certifikaty/6.webp" width="1920" height="1080" alt="Osvědčení o získání profesní kvalifikace" loading="lazy">
+              </button>
+            </li>
+        </ul>
+      </div>
+    </div>
+    <div class="cert-carousel__controls">
+      <button type="button" class="cert-carousel__btn" data-prev aria-label="Posunout zpět">&larr;</button>
+      <button type="button" class="cert-carousel__btn cert-carousel__btn--play" data-toggle aria-label="Pozastavit posun">
+        <span aria-hidden="true">❚❚</span>
+      </button>
+      <button type="button" class="cert-carousel__btn" data-next aria-label="Posunout dopředu">&rarr;</button>
+    </div>
+  </div>
+
+  <div class="cert-lightbox" data-lightbox hidden role="dialog" aria-modal="true" aria-label="Náhled certifikátu">
+    <figure class="cert-lightbox__figure">
+      <img class="cert-lightbox__img" data-lightbox-img src="" alt="">
+    </figure>
+    <button type="button" class="cert-lightbox__close" data-lightbox-close aria-label="Zavřít">&times;</button>
+    <button type="button" class="cert-lightbox__nav cert-lightbox__nav--prev" data-lightbox-prev aria-label="Předchozí certifikát">&larr;</button>
+    <button type="button" class="cert-lightbox__nav cert-lightbox__nav--next" data-lightbox-next aria-label="Další certifikát">&rarr;</button>
   </div>
 </section>
 
