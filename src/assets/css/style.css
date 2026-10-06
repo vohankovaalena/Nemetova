@@ -501,6 +501,7 @@ p { margin: 0 0 var(--space-sm); }
 
 /* ---------- Testimonials ---------- */
 .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+.testimonials--two { grid-template-columns: repeat(2, 1fr); }
 .testimonial {
   background: var(--color-cream); border: 1px solid var(--color-line);
   padding: 2.4rem 2rem; text-align: center;
@@ -688,7 +689,7 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
       rgba(250, 249, 248, 0.5) 68%,
       rgba(250, 249, 248, 0) 88%);
   }
-  .grid-3, .pillars, .testimonials, .treatments, .treatment__types { grid-template-columns: 1fr; }
+  .grid-3, .pillars, .testimonials, .testimonials--two, .treatments, .treatment__types { grid-template-columns: 1fr; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .footer .wrap { grid-template-columns: 1fr 1fr; }
