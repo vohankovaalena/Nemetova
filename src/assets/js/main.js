@@ -4,11 +4,9 @@
    Web3Forms public access key. Public-by-design identifier — it only permits
    delivery to the inbox configured at web3forms.com, so hardcoding it here is
    fine for this build-less static site.
-   TODO: založit zdarma účet na https://web3forms.com s e-mailem info@nemetova.cz
-   a nahradit YOUR_WEB3FORMS_ACCESS_KEY skutečným přístupovým klíčem.
 */
 const CONFIG = {
-  WEB3FORMS_ACCESS_KEY: 'YOUR_WEB3FORMS_ACCESS_KEY',
+  WEB3FORMS_ACCESS_KEY: '9ac2c8b8-4d9f-4b7b-89c5-55552dd4ed89',
   WEB3FORMS_ENDPOINT: 'https://api.web3forms.com/submit',
   NAVBAR_SHADOW_THRESHOLD: 40,
 };
