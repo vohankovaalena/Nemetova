@@ -6,7 +6,7 @@
    fine for this build-less static site.
 */
 const CONFIG = {
-  WEB3FORMS_ACCESS_KEY: '9ac2c8b8-4d9f-4b7b-89c5-55552dd4ed89',
+  WEB3FORMS_ACCESS_KEY: 'd1545713-a5fc-4186-b8d9-9d7929b868fd',
   WEB3FORMS_ENDPOINT: 'https://api.web3forms.com/submit',
   NAVBAR_SHADOW_THRESHOLD: 40,
 };
