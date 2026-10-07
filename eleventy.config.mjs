@@ -54,6 +54,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("src/assets/css/");
   eleventyConfig.addWatchTarget("src/assets/js/");
   eleventyConfig.addFilter("letterAnim", letterAnim);
+  eleventyConfig.addFilter("isoDate", (d) => new Date(d).toISOString().slice(0, 10));
 
   return {
     dir: { input: "src", output: "_site", includes: "_includes", data: "_data" },

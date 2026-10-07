@@ -5,14 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
-<link rel="canonical" href="{{ site.url }}/{{ (page.filePathStem + '.html') }}">
+{%- set canonicalPath = "/" if page.filePathStem == "/index" else page.filePathStem + ".html" -%}
+{%- set shareImage = site.url + "/assets/img/" + (ogImage or "hero-home.webp") -%}
+<link rel="canonical" href="{{ site.url }}{{ canonicalPath }}">
+<meta name="robots" content="{% if noindex %}noindex, follow{% else %}index, follow, max-image-preview:large, max-snippet:-1{% endif %}">
+<meta name="author" content="{{ site.name }}">
 
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name }} — {{ site.tagline }}">
+<meta property="og:url" content="{{ site.url }}{{ canonicalPath }}">
 <meta property="og:title" content="{{ ogTitle or title }}">
 <meta property="og:description" content="{{ ogDescription or description }}">
-<meta property="og:image" content="{{ site.url }}/assets/img/hero-home.webp">
+<meta property="og:image" content="{{ shareImage }}">
 <meta property="og:locale" content="cs_CZ">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ ogTitle or title }}">
+<meta name="twitter:description" content="{{ ogDescription or description }}">
+<meta name="twitter:image" content="{{ shareImage }}">
 
 <link rel="icon" type="image/svg+xml" href="assets/img/favicona_nemetova.svg">
 
@@ -25,21 +34,75 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BeautySalon",
-  "name": "{{ site.name }}",
-  "image": "{{ site.url }}/assets/img/hero-home.webp",
-  "telephone": "{{ site.phone }}",
-  "email": "{{ site.email }}",
-  "url": "{{ site.url }}",
-  "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "{{ site.addressStreet }}",
-    "postalCode": "{{ site.addressZip }}",
-    "addressLocality": "{{ site.addressCity }}",
-    "addressCountry": "CZ"
-  },
-  "sameAs": ["{{ site.instagram }}", "{{ site.facebook }}"]
+  "@graph": [
+    {
+      "@type": ["BeautySalon", "LocalBusiness"],
+      "@id": "{{ site.url }}/#salon",
+      "name": "{{ site.name }} — {{ site.tagline }}",
+      "alternateName": "{{ site.brand }}",
+      "description": "Kosmetický salon v Příbrami: ošetření pleti Sothys Paris, manikúra, pedikúra a dárkové poukazy. Péče o ženy i muže, individuální přístup.",
+      "image": "{{ site.url }}/assets/img/hero-home.webp",
+      "logo": "{{ site.url }}/assets/img/logo_nemetova.svg",
+      "telephone": "{{ site.phone }}",
+      "email": "{{ site.email }}",
+      "url": "{{ site.url }}/",
+      "priceRange": "650–1400 Kč",
+      "currenciesAccepted": "CZK",
+      "areaServed": { "@type": "City", "name": "Příbram" },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "{{ site.addressStreet }}",
+        "postalCode": "{{ site.addressZip }}",
+        "addressLocality": "{{ site.addressCity }}",
+        "addressRegion": "Středočeský kraj",
+        "addressCountry": "CZ"
+      },
+      "founder": { "@id": "{{ site.url }}/#petra" },
+      "employee": { "@id": "{{ site.url }}/#petra" },
+      "makesOffer": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Kosmetické ošetření Sothys Paris", "serviceType": "Kosmetické ošetření pleti" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Manikúra", "serviceType": "Manikúra, CND Shellac, gelové nehty" }, "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "CZK", "minPrice": "650" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Pedikúra", "serviceType": "Přístrojová pedikúra" }, "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "CZK", "price": "800" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dárkové poukazy" } }
+      ],
+      "sameAs": ["{{ site.instagram }}", "{{ site.facebook }}"]
+    },
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#petra",
+      "name": "{{ site.name }}",
+      "jobTitle": "Kosmetička, manikérka, pedikérka",
+      "image": "{{ site.url }}/assets/img/portrait-o-mne.webp",
+      "worksFor": { "@id": "{{ site.url }}/#salon" },
+      "url": "{{ site.url }}/o-mne.html"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}/",
+      "name": "{{ site.name }} — {{ site.tagline }}",
+      "inLanguage": "cs-CZ",
+      "publisher": { "@id": "{{ site.url }}/#salon" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "{{ site.url }}{{ canonicalPath }}#webpage",
+      "url": "{{ site.url }}{{ canonicalPath }}",
+      "name": "{{ title }}",
+      "description": "{{ description }}",
+      "inLanguage": "cs-CZ",
+      "isPartOf": { "@id": "{{ site.url }}/#website" },
+      "about": { "@id": "{{ site.url }}/#salon" },
+      "primaryImageOfPage": "{{ shareImage }}"
+    }{% if canonicalPath != "/" %},
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Domů", "item": "{{ site.url }}/" },
+        { "@type": "ListItem", "position": 2, "name": "{{ breadcrumb or ogTitle or title }}", "item": "{{ site.url }}{{ canonicalPath }}" }
+      ]
+    }{% endif %}
+  ]
 }
 </script>
 </head>
