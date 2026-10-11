@@ -7,7 +7,7 @@ eleventyExcludeFromCollections: true
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for p in collections.all %}{% if not p.data.noindex %}
   <url>
-    <loc>{{ site.url }}{{ "/" if p.page.filePathStem == "/index" else p.page.filePathStem + ".html" }}</loc>
+    <loc>{{ site.url }}{{ p.page.url }}</loc>
     <lastmod>{{ p.date | isoDate }}</lastmod>
   </url>
 {%- endif %}{% endfor %}

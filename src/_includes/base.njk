@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ title }}</title>
 <meta name="description" content="{{ description }}">
-{%- set canonicalPath = "/" if page.filePathStem == "/index" else page.filePathStem + ".html" -%}
+{%- set canonicalPath = page.url -%}
 {%- set shareImage = site.url + "/assets/img/" + (ogImage or "hero-home.webp") -%}
 <link rel="canonical" href="{{ site.url }}{{ canonicalPath }}">
 <meta name="robots" content="{% if noindex %}noindex, follow{% else %}index, follow, max-image-preview:large, max-snippet:-1{% endif %}">
@@ -23,13 +23,13 @@
 <meta name="twitter:description" content="{{ ogDescription or description }}">
 <meta name="twitter:image" content="{{ shareImage }}">
 
-<link rel="icon" type="image/svg+xml" href="assets/img/favicona_nemetova.svg">
+<link rel="icon" type="image/svg+xml" href="/assets/img/favicona_nemetova.svg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css">
 
 <script type="application/ld+json">
 {
@@ -74,7 +74,7 @@
       "jobTitle": "Kosmetička, manikérka, pedikérka",
       "image": "{{ site.url }}/assets/img/portrait-o-mne.webp",
       "worksFor": { "@id": "{{ site.url }}/#salon" },
-      "url": "{{ site.url }}/o-mne.html"
+      "url": "{{ site.url }}/o-mne/"
     },
     {
       "@type": "WebSite",
@@ -111,9 +111,9 @@
 
 <header class="site-header{% if heroImage %} site-header--on-image{% endif %}" id="siteHeader">
   <div class="wrap">
-    <a class="logo" href="index.html" aria-label="{{ site.name }} — úvodní stránka">
-      <img class="logo__img logo__img--color" src="assets/img/logo_nemetova.svg" alt="{{ site.brand }}" width="237" height="100">
-      <img class="logo__img logo__img--white" src="assets/img/logo_nemetova_bile.svg" alt="" width="237" height="100">
+    <a class="logo" href="/" aria-label="{{ site.name }} — úvodní stránka">
+      <img class="logo__img logo__img--color" src="/assets/img/logo_nemetova.svg" alt="{{ site.brand }}" width="237" height="100">
+      <img class="logo__img logo__img--white" src="/assets/img/logo_nemetova_bile.svg" alt="" width="237" height="100">
     </a>
 
     <button class="nav-toggle" id="navToggle" aria-label="Otevřít menu" aria-expanded="false" aria-controls="navList">
@@ -123,10 +123,10 @@
     <ul class="nav-list" id="navList">
       {%- for item in nav %}
       <li><a class="nav__link" href="{{ item.href }}"
-             {% if page.filePathStem + ".html" == "/" + item.href %} aria-current="page"{% endif %}
+             {% if page.url == item.href %} aria-current="page"{% endif %}
         >{{ item.label }}</a></li>
       {%- endfor %}
-      <li class="nav-cta"><a class="btn btn--gold" href="kontakt.html">Objednat se</a></li>
+      <li class="nav-cta"><a class="btn btn--gold" href="/kontakt/">Objednat se</a></li>
     </ul>
   </div>
 </header>
@@ -138,8 +138,8 @@
 <footer class="footer">
   <div class="wrap">
     <div>
-      <a class="logo" href="index.html" aria-label="{{ site.name }} — úvodní stránka">
-        <img class="logo__img" src="assets/img/logo_nemetova_bile.svg" alt="{{ site.brand }}" width="237" height="100">
+      <a class="logo" href="/" aria-label="{{ site.name }} — úvodní stránka">
+        <img class="logo__img" src="/assets/img/logo_nemetova_bile.svg" alt="{{ site.brand }}" width="237" height="100">
       </a>
       <p class="footer-tagline">{{ site.tagline }} — péče o pleť, ruce a nohy v Příbrami. Individuální přístup a produkty francouzské značky Sothys Paris.</p>
       <div class="social-row">
@@ -170,7 +170,7 @@
   </div>
   <div class="wrap footer-bottom">
     <span>&copy; 2026 {{ site.name }}, IČO {{ site.ico }}</span>
-    <a href="gdpr.html">Ochrana osobních údajů</a>
+    <a href="/gdpr/">Ochrana osobních údajů</a>
   </div>
 </footer>
 
@@ -204,7 +204,7 @@
         </div>
         <div class="form-gdpr-checkbox">
           <input type="checkbox" id="chat-gdpr" name="gdpr" required>
-          <label for="chat-gdpr">Souhlasím se zpracováním osobních údajů dle <a href="gdpr.html" target="_blank" rel="noopener">Zásad ochrany osobních údajů<span class="sr-only"> (otevře se v novém okně)</span></a>.</label>
+          <label for="chat-gdpr">Souhlasím se zpracováním osobních údajů dle <a href="/gdpr/" target="_blank" rel="noopener">Zásad ochrany osobních údajů<span class="sr-only"> (otevře se v novém okně)</span></a>.</label>
         </div>
         <button type="submit" class="chat-form-submit">Odeslat zprávu</button>
       </form>
@@ -221,6 +221,6 @@
   </button>
 </div>
 
-<script src="assets/js/main.js" defer></script>
+<script src="/assets/js/main.js" defer></script>
 </body>
 </html>

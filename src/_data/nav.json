@@ -1,7 +1,7 @@
 [
-  { "href": "index.html", "label": "Domů" },
-  { "href": "o-mne.html", "label": "O mně" },
-  { "href": "sluzby.html", "label": "Služby" },
-  { "href": "sothys.html", "label": "Sothys" },
-  { "href": "kontakt.html", "label": "Kontakt" }
+  { "href": "/", "label": "Domů" },
+  { "href": "/o-mne/", "label": "O mně" },
+  { "href": "/sluzby/", "label": "Služby" },
+  { "href": "/sothys/", "label": "Sothys" },
+  { "href": "/kontakt/", "label": "Kontakt" }
 ]

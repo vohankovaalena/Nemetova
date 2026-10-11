@@ -1,0 +1,21 @@
+---
+layout: false
+eleventyExcludeFromCollections: true
+pagination:
+  data: redirects
+  size: 1
+  alias: r
+permalink: "/{{ r }}.html"
+---
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Stránka byla přesunuta</title>
+<link rel="canonical" href="{{ site.url }}/{{ r }}/">
+<meta http-equiv="refresh" content="0; url=/{{ r }}/">
+</head>
+<body>
+<p>Stránka byla přesunuta na <a href="/{{ r }}/">{{ site.url }}/{{ r }}/</a>.</p>
+</body>
+</html>
