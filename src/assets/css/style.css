@@ -846,6 +846,14 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
 .cert-carousel__btn:focus-visible { outline: 2px solid var(--color-gold-text); outline-offset: 3px; }
 .cert-carousel__btn--play { font-size: 0.6rem; }
 
+/* Varianta s fotkami (Sothys): karty na výšku bez rámečku */
+.cert-carousel--photos .cert-carousel__card {
+  width: clamp(200px, 26vw, 280px);
+  padding: 0; border: 0; background: none;
+}
+.cert-carousel--photos .cert-carousel__open { aspect-ratio: 3 / 4; overflow: hidden; }
+.cert-carousel--photos .cert-carousel__open img { height: 100%; aspect-ratio: auto; object-fit: cover; }
+
 /* Lightbox pro certifikáty */
 .cert-lightbox[hidden] { display: none !important; }
 .cert-lightbox {
@@ -862,6 +870,8 @@ html.reveal-ready [data-reveal].is-visible { transform: translateY(0); }
   background: var(--color-cream);
   border: 1px solid var(--color-gold);
 }
+.cert-lightbox--photo .cert-lightbox__figure { display: flex; justify-content: center; }
+.cert-lightbox--photo .cert-lightbox__img { width: auto; max-width: 100%; }
 .cert-lightbox__close,
 .cert-lightbox__nav {
   position: absolute;

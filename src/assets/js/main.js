@@ -216,7 +216,7 @@ wireForm(document.getElementById('chatForm'), document.getElementById('chatFormS
 }());
 
 /* ===========================
-   CERTIFICATE CAROUSEL (O mně)
+   CAROUSEL (certifikáty na O mně, fotky na Sothys)
    ===========================
    Nekonečný posun: track je zdvojený (kopie je aria-hidden), takže smyčka
    navazuje bez skoku. Posun řídí requestAnimationFrame. Zastaví se při najetí
@@ -224,10 +224,7 @@ wireForm(document.getElementById('chatForm'), document.getElementById('chatFormS
    tlačítkem a při "omezit pohyb" nejede sám. Šipky posunou o jednu kartu.
    Klik na certifikát otevře lightbox.
 */
-(function () {
-  const root = document.querySelector('[data-carousel]');
-  if (!root) return;
-
+document.querySelectorAll('[data-carousel]').forEach((root) => {
   const track = root.querySelector('[data-track]');
   const group = track.querySelector('[data-group]');
   const prev = root.querySelector('[data-prev]');
@@ -343,7 +340,7 @@ wireForm(document.getElementById('chatForm'), document.getElementById('chatFormS
   window.addEventListener('load', recalc);
 
   /* ---------- Lightbox ---------- */
-  const lightbox = document.querySelector('[data-lightbox]');
+  const lightbox = root.parentElement.querySelector('[data-lightbox]');
   const lbImg = lightbox.querySelector('[data-lightbox-img]');
   const lbClose = lightbox.querySelector('[data-lightbox-close]');
   const lbPrev = lightbox.querySelector('[data-lightbox-prev]');
@@ -397,4 +394,4 @@ wireForm(document.getElementById('chatForm'), document.getElementById('chatFormS
   recalc();
   renderToggle();
   requestAnimationFrame(frame);
-}());
+});;
